@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mkdir -p \"c:/Extras/LLD/SOLID/.CLAUDE/skills/compare-patterns\")",
+      "Bash(mkdir -p \"c:/Extras/LLD/SOLID/.CLAUDE/skills/quiz\")"
+    ]
+  }
+}

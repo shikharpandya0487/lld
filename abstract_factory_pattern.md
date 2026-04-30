@@ -32,66 +32,56 @@ We will build a mini UI framework that supports two themes — **Light** and **D
 
 ```
 src/
-  abstract_factory/
-    interfaces.py      ← Abstract products + Abstract factory
-    light_theme.py     ← Concrete Light family
-    dark_theme.py      ← Concrete Dark family
-    app.py             ← Client code
-    main.py            ← Entry point / factory selector
+  abstractfactory/
+    Button.java              ← Abstract product
+    Checkbox.java            ← Abstract product
+    UIFactory.java           ← Abstract factory interface
+    LightButton.java         ← Concrete Light product
+    LightCheckbox.java       ← Concrete Light product
+    LightThemeFactory.java   ← Concrete Light factory
+    DarkButton.java          ← Concrete Dark product
+    DarkCheckbox.java        ← Concrete Dark product
+    DarkThemeFactory.java    ← Concrete Dark factory
+    Application.java         ← Client code
+    Main.java                ← Entry point / factory selector
 ```
 
 ---
 
-### Step 1 — Abstract Products & Abstract Factory (`interfaces.py`)
+### Step 1 — Abstract Products & Abstract Factory
 
-```python
-from abc import ABC, abstractmethod
+#### `Button.java`
 
+```java
+// Abstract Product — every Button variant must honour this contract
+public interface Button {
+    String render();    // Describes how the button looks
+    String onClick();   // Describes the button's click feedback
+}
+```
 
-# ── Abstract Products ──────────────────────────────────────────────────────────
+#### `Checkbox.java`
 
-class Button(ABC):
-    """Every Button variant must be renderable and clickable."""
+```java
+// Abstract Product — every Checkbox variant must honour this contract
+public interface Checkbox {
+    String render();    // Describes how the checkbox looks
+    String toggle();    // Describes the toggle behaviour
+}
+```
 
-    @abstractmethod
-    def render(self) -> str:
-        """Return a string describing how the button looks."""
-        ...
+#### `UIFactory.java`
 
-    @abstractmethod
-    def on_click(self) -> str:
-        """Return the button's click feedback."""
-        ...
-
-
-class Checkbox(ABC):
-    """Every Checkbox variant must be renderable and toggleable."""
-
-    @abstractmethod
-    def render(self) -> str:
-        ...
-
-    @abstractmethod
-    def toggle(self) -> str:
-        ...
-
-
-# ── Abstract Factory ───────────────────────────────────────────────────────────
-
-class UIFactory(ABC):
-    """
-    Declares creation methods for each distinct product in the widget family.
-    Concrete factories implement this to return products that belong to the
-    same theme/family so they always look consistent together.
-    """
-
-    @abstractmethod
-    def create_button(self) -> Button:
-        ...
-
-    @abstractmethod
-    def create_checkbox(self) -> Checkbox:
-        ...
+```java
+/**
+ * Abstract Factory — declares one creation method per product type.
+ * Concrete factories implement this interface to return products
+ * that belong to the same theme/family, guaranteeing visual consistency.
+ */
+public interface UIFactory {
+    Button   createButton();
+    Checkbox createCheckbox();
+}
 ```
 
 **What is happening here?**
@@ -100,138 +90,185 @@ class UIFactory(ABC):
 
 ---
 
-### Step 2 — Light Theme Family (`light_theme.py`)
+### Step 2 — Light Theme Family
 
-```python
-from interfaces import Button, Checkbox, UIFactory
+#### `LightButton.java`
 
+```java
+public class LightButton implements Button {
 
-class LightButton(Button):
-    def render(self) -> str:
-        return "[Light Button] White background, dark text border"
+    @Override
+    public String render() {
+        return "[Light Button] White background, dark text border";
+    }
 
-    def on_click(self) -> str:
-        return "[Light Button] Ripple effect in light grey"
+    @Override
+    public String onClick() {
+        return "[Light Button] Ripple effect in light grey";
+    }
+}
+```
 
+#### `LightCheckbox.java`
 
-class LightCheckbox(Checkbox):
-    def render(self) -> str:
-        return "[Light Checkbox] White box with thin dark border"
+```java
+public class LightCheckbox implements Checkbox {
 
-    def toggle(self) -> str:
-        return "[Light Checkbox] Dark checkmark appears inside white box"
+    @Override
+    public String render() {
+        return "[Light Checkbox] White box with thin dark border";
+    }
 
+    @Override
+    public String toggle() {
+        return "[Light Checkbox] Dark checkmark appears inside white box";
+    }
+}
+```
 
-class LightThemeFactory(UIFactory):
-    """Concrete factory — produces the entire Light widget family."""
+#### `LightThemeFactory.java`
 
-    def create_button(self) -> Button:
-        return LightButton()
+```java
+// Concrete Factory — produces the entire Light widget family
+public class LightThemeFactory implements UIFactory {
 
-    def create_checkbox(self) -> Checkbox:
-        return LightCheckbox()
+    @Override
+    public Button createButton() {
+        return new LightButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new LightCheckbox();
+    }
+}
 ```
 
 ---
 
-### Step 3 — Dark Theme Family (`dark_theme.py`)
+### Step 3 — Dark Theme Family
 
-```python
-from interfaces import Button, Checkbox, UIFactory
+#### `DarkButton.java`
 
+```java
+public class DarkButton implements Button {
 
-class DarkButton(Button):
-    def render(self) -> str:
-        return "[Dark Button] Charcoal background, white glowing border"
+    @Override
+    public String render() {
+        return "[Dark Button] Charcoal background, white glowing border";
+    }
 
-    def on_click(self) -> str:
-        return "[Dark Button] Ripple effect in electric blue"
+    @Override
+    public String onClick() {
+        return "[Dark Button] Ripple effect in electric blue";
+    }
+}
+```
 
+#### `DarkCheckbox.java`
 
-class DarkCheckbox(Checkbox):
-    def render(self) -> str:
-        return "[Dark Checkbox] Dark box with neon border"
+```java
+public class DarkCheckbox implements Checkbox {
 
-    def toggle(self) -> str:
-        return "[Dark Checkbox] White checkmark glows on dark background"
+    @Override
+    public String render() {
+        return "[Dark Checkbox] Dark box with neon border";
+    }
 
+    @Override
+    public String toggle() {
+        return "[Dark Checkbox] White checkmark glows on dark background";
+    }
+}
+```
 
-class DarkThemeFactory(UIFactory):
-    """Concrete factory — produces the entire Dark widget family."""
+#### `DarkThemeFactory.java`
 
-    def create_button(self) -> Button:
-        return DarkButton()
+```java
+// Concrete Factory — produces the entire Dark widget family
+public class DarkThemeFactory implements UIFactory {
 
-    def create_checkbox(self) -> Checkbox:
-        return DarkCheckbox()
+    @Override
+    public Button createButton() {
+        return new DarkButton();
+    }
+
+    @Override
+    public Checkbox createCheckbox() {
+        return new DarkCheckbox();
+    }
+}
 ```
 
 ---
 
-### Step 4 — Client / Application (`app.py`)
+### Step 4 — Client / Application (`Application.java`)
 
-```python
-from interfaces import UIFactory, Button, Checkbox
+```java
+/**
+ * Client code. Knows NOTHING about LightButton or DarkCheckbox.
+ * It only talks to the abstract interfaces: UIFactory, Button, Checkbox.
+ * Swap the factory at construction time and the whole app changes theme.
+ */
+public class Application {
 
+    private final Button   button;
+    private final Checkbox checkbox;
 
-class Application:
-    """
-    The client code. It knows NOTHING about LightButton or DarkCheckbox.
-    It only talks to the abstract interfaces: UIFactory, Button, Checkbox.
-    Swap the factory at startup and the whole app changes theme.
-    """
+    // The factory is injected — this class never calls a concrete constructor.
+    public Application(UIFactory factory) {
+        this.button   = factory.createButton();
+        this.checkbox = factory.createCheckbox();
+    }
 
-    def __init__(self, factory: UIFactory) -> None:
-        # The factory is injected — the app never calls a concrete constructor.
-        self._button: Button = factory.create_button()
-        self._checkbox: Checkbox = factory.create_checkbox()
+    public void renderUI() {
+        System.out.println(button.render());
+        System.out.println(checkbox.render());
+    }
 
-    def render_ui(self) -> None:
-        print(self._button.render())
-        print(self._checkbox.render())
-
-    def interact(self) -> None:
-        print(self._button.on_click())
-        print(self._checkbox.toggle())
+    public void interact() {
+        System.out.println(button.onClick());
+        System.out.println(checkbox.toggle());
+    }
+}
 ```
 
 **Key insight:** `Application` is completely decoupled from every concrete class. Its constructor receives a `UIFactory` — dependency injection in action.
 
 ---
 
-### Step 5 — Entry Point (`main.py`)
+### Step 5 — Entry Point (`Main.java`)
 
-```python
-import os
-from interfaces import UIFactory
-from light_theme import LightThemeFactory
-from dark_theme import DarkThemeFactory
-from app import Application
+```java
+/**
+ * The ONE place in the entire codebase that references a concrete factory.
+ * In a real app the choice comes from a config file, system property,
+ * or environment variable — never from business logic.
+ */
+public class Main {
 
+    private static UIFactory getFactory() {
+        String theme = System.getenv("APP_THEME");   // e.g. export APP_THEME=dark
+        if ("dark".equalsIgnoreCase(theme)) {
+            return new DarkThemeFactory();
+        }
+        return new LightThemeFactory();              // default
+    }
 
-def get_factory() -> UIFactory:
-    """
-    In a real app this decision comes from a config file, OS setting,
-    user preference, or environment variable.
-    """
-    theme = os.getenv("APP_THEME", "light").lower()
-    if theme == "dark":
-        return DarkThemeFactory()
-    return LightThemeFactory()
+    public static void main(String[] args) {
+        UIFactory   factory = getFactory();
+        Application app     = new Application(factory);
 
+        System.out.println("=== Rendering UI ===");
+        app.renderUI();
 
-if __name__ == "__main__":
-    factory = get_factory()
-    app = Application(factory)
-
-    print("=== Rendering UI ===")
-    app.render_ui()
-
-    print("\n=== User Interacts ===")
-    app.interact()
+        System.out.println("\n=== User Interacts ===");
+        app.interact();
+    }
+}
 ```
 
-**Sample output — Light theme (`APP_THEME=light`):**
+**Sample output — Light theme (default / `APP_THEME=light`):**
 
 ```
 === Rendering UI ===
@@ -263,16 +300,16 @@ if __name__ == "__main__":
 ┌─────────────────────────────────────────────────┐
 │               <<interface>>                     │
 │                 UIFactory                       │
-│  + create_button()  : Button                   │
-│  + create_checkbox(): Checkbox                 │
+│  + createButton()  : Button                    │
+│  + createCheckbox(): Checkbox                  │
 └──────────────┬──────────────────────────────────┘
                │ implements
    ┌───────────┴────────────┐
    │                        │
    ▼                        ▼
 LightThemeFactory      DarkThemeFactory
-  create_button()        create_button()
-  create_checkbox()      create_checkbox()
+  createButton()         createButton()
+  createCheckbox()       createCheckbox()
    │                        │
    │ creates                │ creates
    ▼                        ▼
@@ -297,9 +334,9 @@ LightCheckbox          DarkCheckbox
 | `Button` / `Checkbox` | Abstract Products — define what a widget must do |
 | `LightButton`, `DarkButton`, etc. | Concrete Products — the actual implementations |
 | `Application` | Client — consumes only abstract types, never concrete ones |
-| `main.py` | Configuration Point — the one place that decides which family to use |
+| `Main.java` | Configuration Point — the one place that decides which family to use |
 
-### Why is `main.py` the only place with a concrete reference?
+### Why is `Main.java` the only place with a concrete reference?
 Because the factory choice is a **configuration decision**, not a business logic decision. The rest of the app never needs to know which theme is active. This is the pattern's central promise.
 
 ---
@@ -309,9 +346,9 @@ Because the factory choice is a **configuration decision**, not a business logic
 | # | Advantage | Explanation |
 |---|---|---|
 | 1 | **Product consistency** | All products from one factory are designed to work together. You can never accidentally mix a Dark button with a Light checkbox. |
-| 2 | **Easy family swap** | Changing the entire product family is a single-line change in `main.py`. No other code needs touching. |
+| 2 | **Easy family swap** | Changing the entire product family is a single-line change in `Main.java`. No other code needs touching. |
 | 3 | **Isolated concrete classes** | Client code (`Application`) never imports or references any concrete class. |
-| 4 | **Adding a new family is low-risk** | To add a "High Contrast" theme, create `HighContrastButton`, `HighContrastCheckbox`, and `HighContrastFactory`. Existing code is untouched. |
+| 4 | **Adding a new family is low-risk** | To add a "High Contrast" theme, create `HighContrastButton`, `HighContrastCheckbox`, and `HighContrastThemeFactory`. Existing code is untouched. |
 | 5 | **Promotes testability** | You can inject a `MockUIFactory` in tests that returns stub widgets, enabling fast unit tests without real UI. |
 
 ---
@@ -320,8 +357,8 @@ Because the factory choice is a **configuration decision**, not a business logic
 
 | # | Disadvantage | Explanation |
 |---|---|---|
-| 1 | **High class count** | Each new product type (e.g., adding `Slider`) requires a new abstract product + one concrete class *per family*. Three themes × five widget types = 15 concrete classes minimum. |
-| 2 | **Rigid product interface** | Adding a new product kind (`create_slider()`) means updating the abstract factory and *every* concrete factory, even those that do not need a slider. |
+| 1 | **High class count** | Each new product type (e.g., adding `Slider`) requires a new interface + one concrete class *per family*. Three themes × five widget types = 15 concrete classes minimum. |
+| 2 | **Rigid product interface** | Adding a new product kind (`createSlider()`) means updating `UIFactory` and *every* concrete factory, even those that do not need a slider. |
 | 3 | **Overkill for simple cases** | If you only have one product type or one family, a simple Factory Method or even a plain constructor is cleaner. |
 | 4 | **Indirection overhead** | Understanding the code requires tracing through multiple layers of abstraction, which increases cognitive load for newcomers. |
 
@@ -342,28 +379,52 @@ No class is doing too many jobs.
 ### 2. Open/Closed Principle (OCP) ✅
 The system is **open for extension, closed for modification**.
 
-To add a "High Contrast" theme:
-```python
-# NEW FILE — existing files are not touched
-class HighContrastButton(Button): ...
-class HighContrastCheckbox(Checkbox): ...
-class HighContrastFactory(UIFactory): ...
+To add a "High Contrast" theme, you only create new files:
+
+```java
+// NEW FILES — existing files are not touched at all
+public class HighContrastButton   implements Button   { ... }
+public class HighContrastCheckbox implements Checkbox { ... }
+public class HighContrastFactory  implements UIFactory { ... }
 ```
-The `Application`, `UIFactory`, `Button`, and `Checkbox` classes are **not modified at all**.
+
+The `Application`, `UIFactory`, `Button`, and `Checkbox` types are **not modified at all**.
 
 ---
 
 ### 3. Liskov Substitution Principle (LSP) ✅
-`LightThemeFactory` and `DarkThemeFactory` are substitutable for `UIFactory` anywhere. `Application` receives a `UIFactory` and works identically regardless of which concrete factory is passed — the program's correctness does not change.
+`LightThemeFactory` and `DarkThemeFactory` are substitutable for `UIFactory` anywhere:
 
-Similarly, `LightButton` is substitutable for `Button` and `DarkButton` is substitutable for `Button` — consumers of `Button` do not need to know which concrete type they hold.
+```java
+UIFactory factory = new LightThemeFactory(); // works
+UIFactory factory = new DarkThemeFactory();  // also works — Application never knows the difference
+Application app = new Application(factory);
+```
+
+`Application` receives a `UIFactory` reference and works identically regardless of which concrete factory is passed — the program's correctness does not change.
+
+Similarly, `LightButton` is substitutable for `Button` anywhere a `Button` is expected.
 
 ---
 
 ### 4. Interface Segregation Principle (ISP) ✅
-The abstract products (`Button`, `Checkbox`) are focused and minimal — each defines only the methods relevant to that widget type. No widget is forced to implement methods it does not need. The `UIFactory` interface is also focused: one method per product type.
+The abstract products (`Button`, `Checkbox`) are focused and minimal — each defines only the methods relevant to that widget type. No widget is forced to implement methods it does not need.
 
-If a factory does not need checkboxes, you would split the factory into finer-grained interfaces rather than implementing dummy `create_checkbox()` methods.
+```java
+// Button only knows about button concerns
+public interface Button {
+    String render();
+    String onClick();
+}
+
+// Checkbox only knows about checkbox concerns
+public interface Checkbox {
+    String render();
+    String toggle();
+}
+```
+
+If a factory does not need checkboxes, you would split `UIFactory` into finer-grained interfaces rather than forcing factories to implement a dummy `createCheckbox()`.
 
 ---
 
@@ -371,26 +432,36 @@ If a factory does not need checkboxes, you would split the factory into finer-gr
 This is where Abstract Factory shines most.
 
 **Without DIP (bad):**
-```python
-class Application:
-    def __init__(self):
-        self._button = LightButton()      # ← high-level module depends on detail
-        self._checkbox = LightCheckbox()  # ← coupled, impossible to swap
+```java
+public class Application {
+    private LightButton   button;    // ← high-level module depends on a detail
+    private LightCheckbox checkbox;  // ← coupled, impossible to swap
+
+    public Application() {
+        this.button   = new LightButton();
+        this.checkbox = new LightCheckbox();
+    }
+}
 ```
 
 **With DIP (good — what we built):**
-```python
-class Application:
-    def __init__(self, factory: UIFactory):  # ← depends on abstraction
-        self._button = factory.create_button()
-        self._checkbox = factory.create_checkbox()
+```java
+public class Application {
+    private final Button   button;    // ← depends on abstraction
+    private final Checkbox checkbox;  // ← depends on abstraction
+
+    public Application(UIFactory factory) {   // ← factory injected, not hardcoded
+        this.button   = factory.createButton();
+        this.checkbox = factory.createCheckbox();
+    }
+}
 ```
 
 - High-level module (`Application`) depends on the **abstraction** (`UIFactory`, `Button`, `Checkbox`).
-- Low-level modules (`LightButton`, `DarkCheckbox`) depend on the **same abstractions**.
+- Low-level modules (`LightButton`, `DarkCheckbox`) implement those same abstractions.
 - Neither depends on the other directly.
 
-The concrete factory is **injected from outside**, keeping the dependency graph inverted and the application fully testable and swappable.
+The concrete factory is **injected from outside** (`Main.java`), keeping the dependency graph inverted and the application fully testable and swappable.
 
 ---
 
