@@ -145,17 +145,19 @@ Do **not** skip sections. A beginner needs the full journey: analogy → problem
 
 ## Skill Output — Save to Markdown File (MANDATORY)
 
-After **every** skill execution (`/explain-pattern`, `/quiz`, `/practise`, `/compare-patterns`, `/review-my-code`), you **must** save the full response to a dedicated markdown file in the repo root. This is not optional.
+After **every** skill execution (`/explain-pattern`, `/quiz`, `/practise`, `/compare-patterns`, `/review-my-code`), you **must** save the full response to a dedicated markdown file under `docs/`. This is not optional.
 
 ### File Naming Convention
 
-| Skill | File name pattern | Example |
+| Skill | Save path | Example |
 |---|---|---|
-| `/explain-pattern <Name>` | `<name_snake_case>.md` | `composite_pattern.md` |
-| `/quiz <Name>` | `quiz_<name_snake_case>.md` | `quiz_builder_pattern.md` |
-| `/practise <Name>` | `practise_<name_snake_case>.md` | `practise_singleton.md` |
-| `/compare-patterns <A> vs <B>` | `compare_<a>_vs_<b>.md` | `compare_factory_vs_abstract_factory.md` |
-| `/review-my-code` | `review_<short_description>.md` | `review_order_class.md` |
+| `/explain-pattern <Name>` | `docs/<name_snake_case>/<name_snake_case>.md` | `docs/composite_pattern/composite_pattern.md` |
+| `/quiz <Name>` | `docs/<name_snake_case>/quiz_<name_snake_case>.md` | `docs/builder_pattern/quiz_builder_pattern.md` |
+| `/practise <Name>` | `docs/<name_snake_case>/practise_<name_snake_case>.md` | `docs/singleton_pattern/practise_singleton.md` |
+| `/compare-patterns <A> vs <B>` | `docs/compare_<a>_vs_<b>/compare_<a>_vs_<b>.md` | `docs/compare_factory_vs_abstract_factory/compare_factory_vs_abstract_factory.md` |
+| `/review-my-code` | `docs/reviews/review_<short_description>.md` | `docs/reviews/review_order_class.md` |
+
+**For `/explain-pattern`, the directory is created automatically if it does not exist — `docs/<name_snake_case>/` — and the file is saved inside it, not at the repo root.**
 
 ### Rules for Saving
 
@@ -163,12 +165,13 @@ After **every** skill execution (`/explain-pattern`, `/quiz`, `/practise`, `/com
 2. **Save the complete response** — every section, every code block, every table. Do not summarise or truncate.
 3. **If a file for that topic already exists**, overwrite it with the new (more complete) response.
 4. **Update the Project Context table** (below) with a new row for the file if it is not already listed.
-5. Use the Write tool to create the file. The path is always `c:\Extras\LLD\SOLID\<filename>.md`.
+5. Use the Write tool to create the file. The full path is always `c:\Extras\LLD\SOLID\docs\<subpath>`.
 
 ### Checklist After Every Skill
 
-- [ ] Has the full response been written to a `.md` file in the repo root?
-- [ ] Does the filename follow the naming convention above?
+- [ ] Has the full response been written to a `.md` file under `docs/`?
+- [ ] Does the path follow the naming convention above?
+- [ ] For `/explain-pattern`, is the file inside `docs/<pattern_name>/` (not the repo root)?
 - [ ] Is the Project Context table updated with the new file?
 
 ---
@@ -183,10 +186,23 @@ This repo is at `c:\Extras\LLD\SOLID` and covers:
 | `src/ocp/` | Open/Closed Principle — Cart + DB persistence |
 | `src/document_editor/` | OCP + SRP — Document editor |
 | `src/singleton_factory_practise/` | Singleton + Factory — Central logging system |
-| `SOLID_PRINCIPLES.md` | Full beginner guide to SOLID |
-| `singleton_pattern.md` | Full guide to Singleton (including thread safety) |
-| `factory_pattern.md` | Factory pattern guide |
-| `composite_pattern.md` | Full guide to Composite pattern (file system, org chart, UI, menu) |
+| `docs/solid/SOLID_PRINCIPLES.md` | Full beginner guide to SOLID |
+| `docs/oop_concepts/oop_concepts.md` | Core OOP concepts |
+| `docs/singleton_pattern/singleton_pattern.md` | Full guide to Singleton (including thread safety) |
+| `docs/factory_pattern/factory_pattern.md` | Factory pattern guide |
+| `docs/abstract_factory_pattern/abstract_factory_pattern.md` | Abstract Factory pattern guide |
+| `docs/builder_pattern/builder_pattern.md` | Builder pattern guide |
+| `docs/prototype_pattern/prototype_pattern.md` | Prototype pattern guide |
+| `docs/structural_design_patterns/structural_design_patterns.md` | Overview of structural design patterns |
+| `docs/adapter_pattern/adapter_pattern.md` | Adapter pattern guide |
+| `docs/bridge_pattern/bridge_pattern.md` | Bridge pattern guide |
+| `docs/composite_pattern/composite_pattern.md` | Full guide to Composite pattern (file system, org chart, UI, menu) |
+| `docs/decorator_pattern/decorator_pattern.md` | Full guide to Decorator pattern (notifications, text formatting, I/O streams, pricing) |
+| `docs/facade_pattern/facade_pattern.md` | Full guide to Facade pattern (single interface to many subsystems) |
+| `docs/behavioral_patterns/behavioral_patterns.md` | Overview of all 8 behavioral patterns with analogies, BAD/GOOD examples, and comparison tables |
+| `docs/strategy_pattern/strategy_pattern.md` | Full guide to Strategy pattern (sorting, payments, logging, fare calculation) |
+| `docs/practise/singleton_factory_practise_question.md` | Practise problem — Singleton + Factory (central logging) |
+| `docs/practise/config_management_practise.md` | Brain-teaser — Singleton + Factory + Builder (distributed config) |
 
 When an explanation refers to this project's code, cite the path: "`src/ocp/Cart.java` already does this — here is how…"
 

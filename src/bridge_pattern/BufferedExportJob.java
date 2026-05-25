@@ -1,4 +1,4 @@
-
+package bridge_pattern;
 import bridge_pattern.ExportDataJob;
 
 public abstract class BufferedExportJob {

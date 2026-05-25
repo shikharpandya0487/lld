@@ -124,3 +124,38 @@ to Singleton, add a second ConcreteCreator to Factory, add a reset() to Builder.
 - Do not review the code before the user submits it
 - Do not use a domain already used in the `/explain-pattern` output for the same pattern
 - Do not mark something as wrong if it is an equally valid implementation (e.g. Holder pattern vs Enum for Singleton)
+
+---
+
+## Mandatory File Save (MUST DO — not optional)
+
+All practise output is saved under `src/practise_problems/` inside the repo. Each problem gets its **own subdirectory** named after the pattern/principle.
+
+### Directory and File Structure
+
+```
+src/practise_problems/
+└── <name_snake_case>/
+    └── <name_snake_case>_problem.md
+```
+
+**Examples:**
+- `/practise Composite Pattern` → `src\practise_problems\composite_pattern\composite_pattern_problem.md`
+- `/practise Builder` → `src\practise_problems\builder\builder_problem.md`
+- `/practise SRP` → `src\practise_problems\srp\srp_problem.md`
+
+### Phase 1 — Save the Problem Statement
+
+Immediately after generating the problem, save it to the path above using the Write tool.
+
+### Phase 3 — Save the Code Review
+
+Immediately after generating the code review, **append** the full review to the same file:
+
+- Read the existing `<name_snake_case>_problem.md`, append a `---` separator, then append the complete Phase 3 output (what they got right, issues, pattern checklist, stretch goals).
+- This keeps the problem statement and review together in one document per problem.
+
+### Rules for Both Phases
+1. Save every section — scenario, task list, starter code, constraints, hint, and (in Phase 3) the full review with checklist and stretch goals.
+2. If the problem file already exists (e.g. user retries the same pattern), overwrite it in Phase 1 with the new problem.
+3. Do not wait for the user to ask — save immediately after generating each phase's output.

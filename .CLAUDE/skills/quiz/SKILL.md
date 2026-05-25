@@ -196,3 +196,27 @@ When the user sends answers, evaluate every question using this structure:
 - Do not write questions where two options are equally defensible
 - Do not recycle questions from a previous `/quiz` call in the same conversation
 - Do not write a Q3 bug that is a syntax error — it must be a design violation
+
+---
+
+## Mandatory File Save (MUST DO — not optional)
+
+All quiz output is saved to a single markdown file that is updated across both phases.
+
+### Phase 1 — Save the Quiz Questions
+
+Immediately after generating the quiz, save it to:
+
+- **Path:** `c:\Extras\LLD\SOLID\quiz_<name_snake_case>.md`
+- **Example:** `/quiz Composite Pattern` → `quiz_composite_pattern.md`
+
+### Phase 3 — Save the Results
+
+Immediately after generating the evaluation, **append** the full results section to the same file:
+
+- Read the existing `quiz_<name_snake_case>.md`, append a `---` separator, then append the complete Phase 3 output (score, per-question explanations, summary table, what to do next).
+
+### Rules for Both Phases
+1. Save every section — all 5 questions with full options, and (in Phase 3) every explanation, the summary table, and the next-steps recommendation.
+2. If the file already exists (e.g. user retries the quiz), overwrite it in Phase 1 with the new questions.
+3. Do not wait for the user to ask — save immediately after generating each phase's output.

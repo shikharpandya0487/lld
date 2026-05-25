@@ -167,3 +167,17 @@ Then: "The fix: remember that {PatternA} is about X, while {PatternB} is about Y
 - Do not skip the "Same Problem" section — it is the most educational part
 - Do not use the same analogy for both patterns
 - Do not write one example significantly longer than the other
+
+---
+
+## Mandatory File Save (MUST DO — not optional)
+
+After generating the comparison, immediately save the **complete response** to a markdown file using the Write tool.
+
+- **Path:** `c:\Extras\LLD\SOLID\compare_<a_snake_case>_vs_<b_snake_case>.md`
+- **Examples:** `/compare-patterns Factory vs Abstract Factory` → `compare_factory_vs_abstract_factory.md`
+- **Rules:**
+  1. Save every section — one-line difference, comparison table, both code examples, same-problem section, decision flowchart, common mistake, quick recall card.
+  2. If the file already exists, overwrite it with the new response.
+  3. Save immediately after generating the response — do not wait for the user to ask.
+  4. After saving, update the Project Context table in `CLAUDE.md` if the file is not already listed.

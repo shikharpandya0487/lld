@@ -95,3 +95,22 @@ Extract the pattern or principle name from the argument. If the argument is ambi
 
 ## Output Format
 Markdown. All code in fenced ` ```java ``` ` blocks. Headings, tables, and bold text as specified above.
+
+---
+
+## Mandatory File Save (MUST DO — not optional)
+
+After generating the explanation, immediately save the **complete response** to a markdown file using the Write tool.
+
+- **Path:** `c:\Extras\LLD\SOLID\docs\<name_snake_case>\<name_snake_case>.md`
+- **Examples:**
+  - `/explain-pattern Composite` → `docs/composite_pattern/composite_pattern.md`
+  - `/explain-pattern Builder` → `docs/builder_pattern/builder_pattern.md`
+  - `/explain-pattern SRP` → `docs/srp/srp.md`
+- **Rules:**
+  1. Save every section — analogy, all code examples, checklist, quick reference. Do not truncate.
+  2. The directory `docs/<name_snake_case>/` is created automatically by the Write tool if it does not exist.
+  3. **Never save to the repo root.** Always save inside `docs/<name_snake_case>/`.
+  4. If the file already exists, overwrite it with the new response.
+  5. Save immediately after generating the response — do not wait for the user to ask.
+  6. After saving, update the Project Context table in `CLAUDE.md` if the file is not already listed.

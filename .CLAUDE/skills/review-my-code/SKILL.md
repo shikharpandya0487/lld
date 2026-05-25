@@ -145,3 +145,19 @@ Always check for these Java-specific SOLID violations:
 - Do not review code that was not provided — ask the user to paste it
 - Do not narrate what the user's code does line by line — focus on design quality
 - Do not mark a valid alternative implementation as wrong
+
+---
+
+## Mandatory File Save (MUST DO — not optional)
+
+After generating the review, immediately save the **complete response** to a markdown file using the Write tool.
+
+- **Path:** `c:\Extras\LLD\SOLID\review_<short_description>.md`
+- **Derive the short description** from the main class or file being reviewed. Use snake_case. Examples:
+  - Reviewing `OrderProcessor` class → `review_order_processor.md`
+  - Reviewing `src/ocp/Cart.java` → `review_cart.md`
+  - User pastes unnamed code → `review_submitted_code.md`
+- **Rules:**
+  1. Save every section — summary, SOLID principle table, all issues with code snippets, pattern opportunities, what you did well, priority fix list, and the follow-up offer.
+  2. If a review file for the same subject already exists, overwrite it.
+  3. Save immediately after generating the review — do not wait for the user to ask.
